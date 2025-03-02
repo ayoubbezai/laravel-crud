@@ -50,6 +50,17 @@ class ContactController extends Controller
             'birth_date'=> 'date|nullable',
         ]);
 
+        $contactExists = Contact::where("email",$fields["email"])->first();
+
+        if($contactExists){
+
+            return response()->json([
+                "success" => false,
+                "data" => null,
+                "message" => "contact with this email already exict"
+            ],400);
+        }
+
         $contact = Contact::create($fields);
 
         if(!$contact){
@@ -71,7 +82,19 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $contact = Contact::find($id);
+        if(!$contact){
+            return response()->json([
+                "success" => false,
+                "data" => null,
+                "message" =>"contact not found"
+            ],404);
+        }
+        return response()->json([
+            "success" => true,
+            "data" => $contact,
+                
+        ]);
     }
 
     /**
@@ -79,7 +102,37 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+            $contact = Contact::find($id);
+
+            $fields = $request->validate([
+            'first_name'=> 'required|string',
+            'last_name'=> 'required|string',
+            'email'=> 'required|email',
+            'phone_number'=> 'string|nullable',
+            'address'=> 'string|nullable',
+            'birth_date'=> 'date|nullable',
+        ]);
+
+        if($fields["email"] !== $contact->email){
+             $contactExists = Contact::where("email",$fields["email"])->first();
+
+        if($contactExists){
+
+            return response()->json([
+                "success" => false,
+                "data" => null,
+                "message" => "contact with this email already exict"
+            ],400);
+        }
+
+        
+        }
+                $contact->update($fields);
+         return response()->json([
+            "success" => true,
+            "data" => $contact,
+                
+        ]);
     }
 
     /**
@@ -87,6 +140,16 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $contact = Contact::find($id);
+        if(!$contact){
+            return response()->json([
+                "success" => false,
+                "data" => null,
+                "message" =>"contact not found"
+            ],404);
+        }
+
+        $contact->delete();
+        return response(status:204);
     }
 }
