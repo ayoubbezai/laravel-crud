@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid("id")->primary()->unique();
             $table->string("first_name");
             $table->string("last_name");
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->string("email")->unique();
             $table->string("address")->nullable()->default(null);
             $table->string("phone_number")->nullable()->default(null);

@@ -27,5 +27,10 @@ class Contact extends Model
         "phone_number",
         "address",
         "birth_date",
+        "user_id"
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class ,"user_id");
+    }
 }

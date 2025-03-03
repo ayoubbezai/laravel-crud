@@ -41,14 +41,15 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $fields = $request->validate([
-            'first_name'=> 'required|string',
-            'last_name'=> 'required|string',
-            'email'=> 'required|email',
-            'phone_number'=> 'string|nullable',
-            'address'=> 'string|nullable',
-            'birth_date'=> 'date|nullable',
-        ]);
+          $fields = $request->validate([
+        'first_name' => 'required|string',
+        'last_name'  => 'required|string',
+        'email'      => 'required|email|unique:contacts,email',
+        'phone_number' => 'nullable|string',
+        'user_id'    => 'required|string|exists:users,id',
+        'address'    => 'nullable|string',
+        'birth_date' => 'nullable|date',
+    ]);
 
         $contactExists = Contact::where("email",$fields["email"])->first();
 
@@ -64,10 +65,10 @@ class ContactController extends Controller
         $contact = Contact::create($fields);
 
         if(!$contact){
-            return response()->json([
+            return [
                 "success" => false,
                 "data"=> null,
-            ],400);
+            ];
         }
 
         return response()->json([
