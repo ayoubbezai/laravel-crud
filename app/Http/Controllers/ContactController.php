@@ -78,9 +78,11 @@ class ContactController extends Controller
 
     }
 
+
     /**
      * Display the specified resource.
      */
+    
     public function show(string $id)
     {
         $contact = Contact::find($id);
@@ -153,4 +155,32 @@ class ContactController extends Controller
         $contact->delete();
         return response(status:204);
     }
+    
+     public function showUser(string $id)
+    {
+         $contact = Contact::find($id);
+         $user = $contact->user_id;
+        if(!$contact){
+            return response()->json([
+                "success" => false,
+                "data" => null,
+                "message" =>"contact not found"
+            ],404);
+        }
+        if(!$user){
+            return response()->json([
+                "success" => false,
+                "data" => null,
+                "message" =>"user not found"
+            ],404);
+        }
+
+         return response()->json([
+            "success" => true,
+            "user id" => $user,
+                
+        ]);
+    }
+
+
 }
