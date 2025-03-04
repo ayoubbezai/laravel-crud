@@ -23,6 +23,7 @@ class ContactFactory extends Factory
         'phone_number' =>fake()->phoneNumber(),
         'address' =>fake()->streetAddress(),
         'birth_date' =>fake()->date(),
+
         ];
     }
 }

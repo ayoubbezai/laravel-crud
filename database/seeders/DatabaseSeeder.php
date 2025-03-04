@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use Illuminate\Database\Seeder;
+use App\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Contact::factory(500)->create();
+        Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
     }
 }
